@@ -35,7 +35,6 @@ public class Carnet {
 	private int nvips = 0;
 
 	@OneToOne
-	@MapsId
 	@JoinColumn(name = "peregrino_id",nullable = false)
 	private Peregrino peregrino;
 	

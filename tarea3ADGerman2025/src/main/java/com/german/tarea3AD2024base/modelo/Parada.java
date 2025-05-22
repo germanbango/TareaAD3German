@@ -36,9 +36,8 @@ public class Parada {
 	private String responsable;
 
 	@OneToOne
-	@MapsId
-	@JoinColumn(name = "responsable_id", nullable = false)
-	private User usuario;;
+	@JoinColumn(name = "usuario_id", nullable = false)
+	private User usuario;
 
 	@OneToMany(mappedBy = "parada", cascade = CascadeType.ALL)
 	private List<Estancia> estancias = new ArrayList<>();

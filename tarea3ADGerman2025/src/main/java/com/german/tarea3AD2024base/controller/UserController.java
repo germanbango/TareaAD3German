@@ -3,6 +3,7 @@ package com.german.tarea3AD2024base.controller;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+
 import javafx.beans.property.SimpleObjectProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -21,15 +22,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.application.Platform;
 
 @Controller
 public class UserController implements Initializable {
@@ -61,7 +59,6 @@ public class UserController implements Initializable {
     @Autowired 
     private ParadaServicio paradaServicio;
 
-
     @FXML
     private void logout() throws Exception {
         stageManager.switchScene(FxmlView.LOGIN);
@@ -77,9 +74,10 @@ public class UserController implements Initializable {
         if(validarCampos()) {
             try {
                 User responsable = crearUsuarioResponsable();
+                userService.save(responsable); 
                 Parada nuevaParada = crearParada(responsable);
                 paradaServicio.guardar(nuevaParada);
-                
+
                 mostrarAlerta(AlertType.INFORMATION, "Éxito", "Parada registrada correctamente");
                 limpiarCampos();
                 cargarParadas();
@@ -119,7 +117,7 @@ public class UserController implements Initializable {
             return false;
         }
 
-        if(regionInput.isEmpty() || regionInput.length() != 1 || !Character.isLetter(regionInput.charAt(0))) {
+        if(regionInput.length() != 1 || !Character.isLetter(regionInput.charAt(0))) {
             mostrarAlerta(AlertType.WARNING, "Validación", "La región debe ser una sola letra (A-Z)");
             return false;
         }
@@ -162,7 +160,6 @@ public class UserController implements Initializable {
 
     private void cargarParadas() {
         List<Parada> paradas = paradaServicio.encontrarTodos();
-        System.out.println("Paradas cargadas: " + paradas.size()); // Para depuración
         userTable.getItems().setAll(paradas);
     }
 
@@ -187,12 +184,13 @@ public class UserController implements Initializable {
         configurarColumnasTabla();
         cargarParadas();
     }
+
     private void configurarColumnasTabla() {
-        colParadId.setCellValueFactory(new PropertyValueFactory<>("id"));  // Esto ya está correcto
+        colParadId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colParadaNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colParadaRegion.setCellValueFactory(new PropertyValueFactory<>("region"));
         colResponable.setCellValueFactory(new PropertyValueFactory<>("responsable"));
-        
+
         colResponsableId.setCellValueFactory(cellData -> {
             Parada parada = cellData.getValue();
             if (parada != null && parada.getUsuario() != null) {

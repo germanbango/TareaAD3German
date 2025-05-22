@@ -48,7 +48,6 @@ public class Peregrino {
 	private List<Parada> paradas = new ArrayList<>();
 	
 		@OneToOne
-		@MapsId
 		@JoinColumn(name = "usuario_id",nullable = false)
 		private User usuario;
     

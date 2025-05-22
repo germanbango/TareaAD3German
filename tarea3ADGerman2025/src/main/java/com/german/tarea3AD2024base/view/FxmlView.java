@@ -35,6 +35,18 @@ public enum FxmlView {
 		public String getFxmlFile() {
 			return "/fxml/MenuResponsable.fxml";
 		}
+	},
+	REGISTRAR_PEREGRINO{
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("nuevoPeregrino.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/NuevoPeregrino.fxml";
+		}
+		
 	};
 
 	public abstract String getTitle();

@@ -1,8 +1,9 @@
 package com.german.tarea3AD2024base.controller;
 
-
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,46 +31,54 @@ import javafx.scene.control.TextField;
  */
 
 @Controller
-public class LoginController implements Initializable{
+public class LoginController implements Initializable {
 
 	@FXML
-    private Button btnLogin;
+	private Button btnLogin;
 
-    @FXML
-    private PasswordField password;
+	@FXML
+	private PasswordField password;
 
-    @FXML
-    private TextField username;
+	@FXML
+	private TextField username;
 
-    @FXML
-    private Label lblLogin;
-    
-    @Autowired
-    private UserService userService;
-    
-    @Lazy
-    @Autowired
-    private StageManager stageManager;
-   
-    private User user = new User();
-    
-    @FXML
-    private void login(ActionEvent event) throws IOException{
-    	if(userService.authenticate(getUsername(), getPassword())){
-    		user = userService.findByEmail(getUsername());
-    		 if( user.getRol().equals(Rol.ADMIN)){
-    			 stageManager.switchScene(FxmlView.USER);
-    		 }else if(user.getRol().equals(Rol.RESPONSABLE)) {
-    			 Sesion.setId(user.getId());
-    			 stageManager.switchScene(FxmlView.MENU_RESPONSABLE);
-    		 }
-    		
-    		
-    	}else{
-    		lblLogin.setText("Login Failed.");
-    	}
-    }
+	@FXML
+	private Label lblLogin;
+
+	@Autowired
+	private UserService userService;
+
+	@Lazy
+	@Autowired
+	private StageManager stageManager;
+
+	private User user = new User();
 	
+	@FXML
+	private void registrarPeregrino(){
+		stageManager.switchScene(FxmlView.REGISTRAR_PEREGRINO);
+	}
+	@FXML
+	private void login(ActionEvent event) {
+
+		if (comprobarLogin(getUsername(), getPassword())) {
+			stageManager.switchScene(FxmlView.USER);
+		} else if (userService.authenticate(getUsername(), getPassword())) {
+			User loggedUser = userService.findByEmail(getUsername()); 
+			if (loggedUser != null && loggedUser.getRol() != null && loggedUser.getRol().equals(Rol.RESPONSABLE)) { 
+				Sesion.setId(loggedUser.getId());
+				Sesion.setUsuario(loggedUser.getEmail());
+				Sesion.setPerfil(loggedUser.getRol());
+				stageManager.switchScene(FxmlView.MENU_RESPONSABLE);
+			} else {
+				lblLogin.setText("Rol no válido o no asignado."); 
+			}
+		} else {
+			lblLogin.setText("Login Failed.");
+		}
+	}
+
+
 	public String getPassword() {
 		return password.getText();
 	}
@@ -80,7 +89,30 @@ public class LoginController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 	}
 
+	private static boolean comprobarLogin(String nombre, String contrasena) {
+		boolean ret = false;
+		Properties properties = new Properties();
+		/// Comprobar si es el ADMIN
+		try {
+			FileInputStream fis = new FileInputStream("src/main/resources/application.properties");
+			properties.load(fis);
+			String adminnombre = properties.getProperty("nombreadmin");
+			String admincontrasena = properties.getProperty("passadmin");
+			if (nombre.equals(adminnombre) && contrasena.equals(admincontrasena)) {
+				Sesion.setId(0L);
+				Sesion.setUsuario(nombre);
+				Sesion.setPerfil(Rol.ADMIN);
+				ret = true;
+			} else {
+				return ret;
+			}
+		} catch (IOException e) {
+			System.out.println("Se ha producido un error de tipo IOexception:" + e.getLocalizedMessage());
+			e.printStackTrace();
+		}
+		return ret;
+	}
 }
