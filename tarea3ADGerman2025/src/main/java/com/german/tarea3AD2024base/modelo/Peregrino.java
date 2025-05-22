@@ -42,10 +42,9 @@ public class Peregrino {
 	@OneToMany(mappedBy = "peregrino", cascade = CascadeType.ALL)
 	private List<Estancia> estancias = new ArrayList<>();
 	
-
-	@ManyToMany
-	@JoinTable(name = "PeregrinoParada", joinColumns = @JoinColumn(name = "idPeregrino",nullable = false), inverseJoinColumns = @JoinColumn(name = "idParada",nullable = false))
-	private List<Parada> paradas = new ArrayList<>();
+	@OneToMany(mappedBy = "peregrino", cascade = CascadeType.ALL)
+	private List<PeregrinoParada> peregrinosparadas = new ArrayList<>();
+	
 	
 		@OneToOne
 		@JoinColumn(name = "usuario_id",nullable = false)
@@ -129,17 +128,6 @@ public class Peregrino {
 		this.estancias = estancias;
 	}
 
-
-
-	public List<Parada> getParadas() {
-		return paradas;
-	}
-
-
-
-	public void setParadas(List<Parada> paradas) {
-		this.paradas = paradas;
-	}
 
 
 
