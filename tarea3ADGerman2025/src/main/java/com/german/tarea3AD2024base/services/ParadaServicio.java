@@ -43,6 +43,9 @@ public class ParadaServicio {
 		return paradaRepositorio.findAll();
 	}
 
+	public Parada paradaPorNombreyRegion(String nombre, char region) {
+		return paradaRepositorio.findByNombreAndRegion(nombre, region);
+	}
 	public boolean existeParadaConNombreYRegion(String nombre, char region) {
 		return paradaRepositorio.existsByNombreAndRegion(nombre, region);
 	}
@@ -50,7 +53,7 @@ public class ParadaServicio {
 	public List<String> nombreyRegiones() {
 		List<String> ret = new ArrayList<>();
 		for (Parada parada : encontrarTodos()) {
-			ret.add(parada.getNombre() + " (" + parada.getRegion() + ")");
+			ret.add(parada.getNombre() + "  " + parada.getRegion());
 		}
 		return ret;
 	}
