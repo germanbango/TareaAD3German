@@ -11,8 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -41,9 +39,6 @@ public class Parada {
 
 	@OneToMany(mappedBy = "parada", cascade = CascadeType.ALL)
 	private List<Estancia> estancias = new ArrayList<>();
-
-	@ManyToMany(mappedBy = "paradas")
-	private List<Peregrino> peregrinos = new ArrayList<>();
 
 	public Parada() {
 
@@ -105,13 +100,6 @@ public class Parada {
 		this.estancias = estancias;
 	}
 
-	public List<Peregrino> getPeregrinos() {
-		return peregrinos;
-	}
-
-	public void setPeregrinos(List<Peregrino> peregrinos) {
-		this.peregrinos = peregrinos;
-	}
 
 	@Override
 	public String toString() {
