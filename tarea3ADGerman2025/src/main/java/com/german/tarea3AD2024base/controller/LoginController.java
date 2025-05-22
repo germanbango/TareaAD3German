@@ -70,8 +70,11 @@ public class LoginController implements Initializable {
 				Sesion.setUsuario(loggedUser.getEmail());
 				Sesion.setPerfil(loggedUser.getRol());
 				stageManager.switchScene(FxmlView.MENU_RESPONSABLE);
-			} else {
-				lblLogin.setText("Rol no válido o no asignado."); 
+			}else if(loggedUser != null && loggedUser.getRol() != null && loggedUser.getRol().equals(Rol.PEREGRINO)) {
+				Sesion.setId(loggedUser.getId());
+				Sesion.setUsuario(loggedUser.getEmail());
+				Sesion.setPerfil(loggedUser.getRol());
+				stageManager.switchScene(FxmlView.MENU_PEREGRINO);
 			}
 		} else {
 			lblLogin.setText("Login Failed.");
