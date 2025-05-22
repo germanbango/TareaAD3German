@@ -102,7 +102,7 @@
                <children>
                   <VBox alignment="BOTTOM_LEFT" prefHeight="63.0" prefWidth="274.0">
                      <children>
-                        <Button mnemonicParsing="false" styleClass="btnCancel" text="Salir">
+                        <Button mnemonicParsing="false" onAction="#salir" styleClass="btnCancel" text="Salir">
                            <font>
                               <Font size="15.0" />
                            </font>
