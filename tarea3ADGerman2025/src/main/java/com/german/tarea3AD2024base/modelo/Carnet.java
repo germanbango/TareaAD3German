@@ -78,6 +78,23 @@ public class Carnet {
 		this.nvips = nvips;
 	}
 
+	
+	public Peregrino getPeregrino() {
+		return peregrino;
+	}
+
+	public void setPeregrino(Peregrino peregrino) {
+		this.peregrino = peregrino;
+	}
+
+	public Parada getParadaInicial() {
+		return paradaInicial;
+	}
+
+	public void setParadaInicial(Parada paradaInicial) {
+		this.paradaInicial = paradaInicial;
+	}
+
 	@Override
 	public String toString() {
 		return "Carnet [id=" + id + ", fechaexp=" + fechaexp + ", distancia=" + distancia + ", nvips=" + nvips
