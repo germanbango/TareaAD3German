@@ -8,4 +8,5 @@ import com.german.tarea3AD2024base.modelo.Parada;
 @Repository
 public interface ParadaRepositorio extends JpaRepository<Parada, Long>{
     boolean existsByNombreAndRegion(String nombre, char region);
+    Parada findByNombreAndRegion(String nombre, char region);
 }
