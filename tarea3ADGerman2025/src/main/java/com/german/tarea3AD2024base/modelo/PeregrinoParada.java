@@ -25,6 +25,35 @@ public class PeregrinoParada {
 	@ManyToOne
 	@JoinColumn(name = "idParada", nullable = false)
 	private Parada parada;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Peregrino getPeregrino() {
+		return peregrino;
+	}
+
+	public void setPeregrino(Peregrino peregrino) {
+		this.peregrino = peregrino;
+	}
+
+	public Parada getParada() {
+		return parada;
+	}
+
+	public void setParada(Parada parada) {
+		this.parada = parada;
+	}
+
+	@Override
+	public String toString() {
+		return "PeregrinoParada [id=" + id + ", peregrino=" + peregrino + ", parada=" + parada + "]";
+	}
 	
 	
 	
