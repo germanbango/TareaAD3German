@@ -22,10 +22,13 @@ import org.xml.sax.SAXException;
 
 import com.german.tarea3AD2024base.config.StageManager;
 import com.german.tarea3AD2024base.services.ParadaServicio;
+import com.german.tarea3AD2024base.services.UserService;
 import com.german.tarea3AD2024base.view.FxmlView;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
@@ -49,6 +52,9 @@ public class NuevoPeregrinoController implements Initializable {
 
 	@Autowired
 	private ParadaServicio paradaServicio;
+	
+	@Autowired
+	private UserService userService;
 
 	private List<String> paradas;
 	private List<String> paises;
@@ -65,6 +71,34 @@ public class NuevoPeregrinoController implements Initializable {
 	@FXML
 	private void salir() {
 		stageManager.switchScene(FxmlView.LOGIN);
+	}
+	
+	private boolean validar() {
+		
+		String nombre = txtNombrePeregrino.getText();
+		String parada = cmbParadas.getValue();
+		String nacionalidad = cmbNacionalidad.getValue();
+		String usuario = txtUsuario.getText();
+		String contrasena = txtContrasena.getText();
+		
+		if(nombre.isEmpty()) {
+			mostrarAlerta(AlertType.ERROR, "ERROR:", "debe introducir su nombre");
+			return false;
+		}
+		if(parada.isEmpty()||nacionalidad.equals(null)){
+			mostrarAlerta(AlertType.ERROR, "ERROR:", "debe seleccionar una parada");
+			return false;
+		}if(usuario.isEmpty()||usuario.contains(" ")||userService.existeUsuarioConEmail(usuario)){
+			mostrarAlerta(AlertType.ERROR, "ERROR:", "formato de usuario incorrecto o ya existe");
+			return false;
+		}if(contrasena.isEmpty()||contrasena.contains(" ")) {
+			mostrarAlerta(AlertType.ERROR, "ERROR:", "formato de contrasena incorrecto");
+			return false;
+		}if(nacionalidad.isEmpty()|| nacionalidad.equals(null)){
+			mostrarAlerta(AlertType.ERROR, "ERROR:", "debe seleccionar una nacionalidad");
+			return false;
+		}
+		return true;
 	}
 
 	private List<String> cargarPaises() {
@@ -94,5 +128,13 @@ public class NuevoPeregrinoController implements Initializable {
 		}
 		return ret;
 	}
+	
+	private void mostrarAlerta(AlertType tipo, String titulo, String mensaje) {
+        Alert alert = new Alert(tipo);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
 
 }
