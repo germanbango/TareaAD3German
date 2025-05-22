@@ -1,49 +1,70 @@
-package com.german.tarea3AD2024base;
+package com.german.tarea3AD2024base.view;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ConfigurableApplicationContext;
+import java.util.ResourceBundle;
 
-import com.german.tarea3AD2024base.config.StageManager;
-import com.german.tarea3AD2024base.view.FxmlView;
+public enum FxmlView {
+	USER {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("user.title");
+		}
 
-import javafx.application.Application;
-import javafx.stage.Stage;
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/User.fxml";
+		}
+	},
+	LOGIN {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("login.title");
+		}
 
-@SpringBootApplication
-public class Tarea3Ad2024baseApplication extends Application {
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/Login.fxml";
+		}
+	},
+	MENU_RESPONSABLE{
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("menuResponsable.title");
+		}
 
-	protected ConfigurableApplicationContext springContext;
-	protected StageManager stageManager;
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/MenuResponsable.fxml";
+		}
+	},
+	REGISTRAR_PEREGRINO{
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("nuevoPeregrino.title");
+		}
 
-	@Override
-	public void init() throws Exception {
-		springContext = springBootApplicationContext();
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/NuevoPeregrino.fxml";
+		}
+		
+	},
+	MENU_PEREGRINO{
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("menuPeregrino.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/MenuPeregrino.fxml";
+		}
+	};
+
+	public abstract String getTitle();
+
+	public abstract String getFxmlFile();
+
+	String getStringFromResourceBundle(String key) {
+		return ResourceBundle.getBundle("Bundle").getString(key);
 	}
-
-	public static void main(final String[] args) {
-		Application.launch(args);
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		stageManager = springContext.getBean(StageManager.class, primaryStage);
-		displayInitialScene();
-
-	}
-
-	/**
-	 * Useful to override this method by sub-classes wishing to change the first
-	 * Scene to be displayed on startup. Example: Functional tests on main window.
-	 */
-	protected void displayInitialScene() {
-		stageManager.switchScene(FxmlView.LOGIN);
-	}
-
-	private ConfigurableApplicationContext springBootApplicationContext() {
-		SpringApplicationBuilder builder = new SpringApplicationBuilder(Tarea3Ad2024baseApplication.class);
-		String[] args = getParameters().getRaw().stream().toArray(String[]::new);
-		return builder.run(args);
-	}
-
 }
