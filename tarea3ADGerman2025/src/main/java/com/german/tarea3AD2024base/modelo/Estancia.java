@@ -1,6 +1,7 @@
 package com.german.tarea3AD2024base.modelo;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class Estancia {
 	private Long id;
 	
 	@Column(nullable = false)
-	private LocalDate fecha;
+	private LocalDateTime fecha;
 	
 	@Column(nullable = false)
 	private boolean vip = false;
@@ -54,11 +55,11 @@ public class Estancia {
 		this.id = id;
 	}
 
-	public LocalDate getFecha() {
+	public LocalDateTime getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(LocalDate fecha) {
+	public void setFecha(LocalDateTime fecha) {
 		this.fecha = fecha;
 	}
 
